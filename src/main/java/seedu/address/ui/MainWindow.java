@@ -35,6 +35,9 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
+    // Timer object
+    private DukeTimer dukeTimer;
+
     @FXML
     private StackPane commandBoxPlaceholder;
 
@@ -170,10 +173,14 @@ public class MainWindow extends UiPart<Stage> {
      * @see seedu.address.logic.Logic#execute(String)
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
+        if(dukeTimer != null) {
+            dukeTimer.abortTimer();
+        }
         try {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+//            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            dukeTimer = new DukeTimer(commandResult.getFeedbackToUser(), 10, resultDisplay);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
@@ -186,7 +193,7 @@ public class MainWindow extends UiPart<Stage> {
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage());
+            dukeTimer = new DukeTimer(e.getMessage() + ", Clearing Result Display", 5, resultDisplay);
             throw e;
         }
     }
