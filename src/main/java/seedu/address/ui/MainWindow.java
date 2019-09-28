@@ -180,7 +180,8 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
 //            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-            dukeTimer = new DukeTimer(commandResult.getFeedbackToUser(), 10, resultDisplay);
+
+            dukeTimer = new DukeTimer(commandResult.getFeedbackToUser(), 5, resultDisplay);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();

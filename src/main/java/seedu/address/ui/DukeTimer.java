@@ -21,7 +21,7 @@ public class DukeTimer {
             @Override
             public void run() {
                 if(getTimeLeft() >= 0) {
-                    resultDisplay.setFeedbackToUser(mainMessage + " :" + getTimeLeft());
+                    resultDisplay.setFeedbackToUser(mainMessage + " : " + getTimeLeft());
                 } else {
                     timer.cancel();
                     resultDisplay.setFeedbackToUser("");
@@ -41,6 +41,7 @@ public class DukeTimer {
 
     public void abortTimer() {
         this.timer.cancel();
+        resultDisplay.setFeedbackToUser("");
 
     }
 }
