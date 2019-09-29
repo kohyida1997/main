@@ -179,5 +179,6 @@ public class MainApp extends Application {
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
         }
+        System.exit(0);
     }
 }

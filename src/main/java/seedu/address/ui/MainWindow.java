@@ -36,7 +36,7 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
 
     // Timer object
-    private DukeTimer dukeTimer;
+    private GameTimer gameTimer;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -161,6 +161,9 @@ public class MainWindow extends UiPart<Stage> {
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
         primaryStage.hide();
+        //Platform.exit();
+        //System.exit(0);
+
     }
 
     public PersonListPanel getPersonListPanel() {
@@ -173,15 +176,15 @@ public class MainWindow extends UiPart<Stage> {
      * @see seedu.address.logic.Logic#execute(String)
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
-        if(dukeTimer != null) {
-            dukeTimer.abortTimer();
+        if (gameTimer != null) {
+            gameTimer.abortTimer();
         }
         try {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
-//            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            //resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
-            dukeTimer = new DukeTimer(commandResult.getFeedbackToUser(), 5, resultDisplay);
+            gameTimer = new GameTimer(commandResult.getFeedbackToUser(), 500, resultDisplay);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
@@ -194,7 +197,8 @@ public class MainWindow extends UiPart<Stage> {
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
-            dukeTimer = new DukeTimer(e.getMessage() + ", Clearing Result Display", 5, resultDisplay);
+            gameTimer = new GameTimer(
+                    e.getMessage() + ", Clearing Result Display", 500, resultDisplay);
             throw e;
         }
     }
